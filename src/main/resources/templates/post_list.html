@@ -1,0 +1,45 @@
+<html layout:decorate="~{layout}">
+<div layout:fragment="content" class="col-sm-12 col-md-9 col-lg-10 p-3">
+  <h5 class="border-bottom pb-2 mb-3">질문과답변</h5>
+  <div class="row justify-content-between mb-3">
+    <div class="col-6">
+      <div class="btn-group">
+        <button type="button" class="btn btn-sm btn-secondary">a</button>
+        <button type="button" class="btn btn-sm btn-secondary">b</button>
+        <button type="button" class="btn btn-sm btn-secondary">c</button>
+      </div>
+    </div>
+    <div class="col-6">
+      <input type="text" class="form-control form-control-sm kw" onkeypress="return search(event)">
+    </div>
+  </div>
+    <table class="table">
+      <thead class="table-secondary">
+      <tr class="text-center">
+        <th>추천</th>
+        <th style="width:60%">제목</th>
+        <th>글쓴이</th>
+        <th>조회</th>
+        <th>작성일시</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="post, index : ${postList}">
+        <td>
+          <span class="badge badge-warning px-2 py-1">1</span>
+        </td>
+        <td>
+          <a th:href="@{|/post/detail/${post.id}|}" th:text="${post.subject}">1</a>
+        </td>
+        <td>user</td>
+        <td class="small align-middle">1</td>
+        <td th:text="${#temporals.format(post.createDate, 'yyyy년 MM월 dd일 a hh:mm')}" style="font-size:0.75em"></td>
+
+      </tr>
+      </tbody>
+    </table>
+    <a class="btn btn-sm btn-primary" th:href="@{/post/create}">질문 등록</a>
+
+
+</div>
+</html>

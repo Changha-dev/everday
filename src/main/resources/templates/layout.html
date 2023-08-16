@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+
+  <title>Hello, everyday</title>
+</head>
+<body>
+<nav th:replace="~{navbar :: navbarFragment}"></nav>
+
+<div class="container mt-3" style="height: auto !important;">
+  <div class="row" style="height: auto !important;">
+    <div class="col-sm-12 col-md-3 col-lg-2 p-2">
+      <nav class="border-top border-secondary" id="siderbar">
+        <div class="list-group">
+          <a class="rounded-0 list-group-item list-group-item-action list-group-item-light" th:href="@{/post/list}" id="questionLink">질문과 답변</a>
+          <a class="rounded-0 list-group-item list-group-item-action list-group-item-light" href="#" id="feedbackLink">버그및건의</a>
+        </div>
+      </nav>
+    </div>
+    <div class="col-sm-12 col-md-9 col-lg-10 p-2">
+      <div class="border-top border-secondary">
+      <th:block layout:fragment="content"></th:block>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
