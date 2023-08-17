@@ -28,4 +28,8 @@ public class Comment {
     @ManyToOne
     private Post post;
 
+    @ManyToOne
+    private Member author;
+
+    private boolean isModified;
 }

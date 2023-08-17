@@ -1,7 +1,8 @@
 <html layout:decorate="~{layout}">
-<div layout:fragment="content" class="container">
+<div layout:fragment="content" class="border-top border-secondary col-sm-12 col-md-9 col-lg-10 p-3">
   <h5 class="my-3 border-bottom pb-2">질문등록</h5>
-  <form th:action="@{/post/create}" th:object="${postDto}" method="post">
+  <form th:object="${postDto}" method="post">
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
     <div class="alert alert-danger" role="alert" th:if="${#fields.hasAnyErrors()}">
       <div th:each="err : ${#fields.allErrors()}" th:text="${err}" />
     </div>

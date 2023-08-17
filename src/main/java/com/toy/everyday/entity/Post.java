@@ -31,4 +31,14 @@ public class Post {
     @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
     private List<Comment> commentList;
 
+    @ManyToOne
+    private Member author;
+
+    private boolean isModified;
+
+    public void update(String subject, String content) {
+        this.subject = subject;
+        this.content = content;
+        this.isModified = true;
+    }
 }

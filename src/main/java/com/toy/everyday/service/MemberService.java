@@ -20,7 +20,7 @@ public class MemberService {
         Member member = Member.builder()
                 .email(joinDto.getEmail())
                 .password(passwordEncoder.encode(joinDto.getPassword()))
-                .name(joinDto.getName())
+                .username(joinDto.getName())
                 .build();
 
         memberRepository.save(member);
