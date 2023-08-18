@@ -38,7 +38,7 @@
         <td>
           <span th:if="${post.author != null}" th:text="${post.author.username}"></span>
         </td>
-        <td class="small align-middle">1</td>
+        <td class="small align-middle" th:text="${post.getViewCount()}">1</td>
         <td th:text="${#temporals.format(post.createDate, 'yyyy년 MM월 dd일 a hh:mm')}" style="font-size:0.75em"></td>
 
       </tr>

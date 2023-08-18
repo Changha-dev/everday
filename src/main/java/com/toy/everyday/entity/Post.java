@@ -36,9 +36,15 @@ public class Post {
 
     private boolean isModified;
 
+    private int viewCount;
+
     public void update(String subject, String content) {
         this.subject = subject;
         this.content = content;
         this.isModified = true;
+    }
+
+    public void update(int viewCount){
+        this.viewCount = viewCount;
     }
 }

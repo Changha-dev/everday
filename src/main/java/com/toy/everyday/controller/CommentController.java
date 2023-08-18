@@ -8,6 +8,7 @@ import com.toy.everyday.entity.Post;
 import com.toy.everyday.repository.CommentRepository;
 import com.toy.everyday.repository.MemberRepository;
 import com.toy.everyday.repository.PostRepository;
+import com.toy.everyday.service.CommentService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -29,6 +30,7 @@ public class CommentController {
     private final PostRepository postRepository;
     private final CommentRepository commentRepository;
     private final MemberRepository memberRepository;
+    private final CommentService commentService;
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/create/{id}")
@@ -87,5 +89,36 @@ public class CommentController {
         }
 
         return "comment_form";
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/modify/{id}")
+    public String commentModify(@Valid CommentDto commentDto, BindingResult bindingResult,
+                               @PathVariable("id") Integer id, Principal principal) {
+        if (bindingResult.hasErrors()) {
+            return "comment_form";
+        }
+        Comment comment = commentRepository.findById(id.longValue()).orElseThrow(() -> new RuntimeException("해당 댓글이 존재하지 않습니다."));
+        if (!comment.getAuthor().getEmail().equals(principal.getName())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정권한이 없습니다.");
+        }
+        // 수정
+
+        commentService.update(id.longValue(), commentDto.getContent());
+
+        return String.format("redirect:/post/detail/%s", comment.getPost().getId());
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/delete/{id}")
+    public String commentDelete(Principal principal, @PathVariable("id") Integer id){
+        Comment comment = commentRepository.findById(id.longValue()).orElseThrow(() -> new RuntimeException("해당 댓글이 존재하지 않습니다."));
+        if (!comment.getAuthor().getEmail().equals(principal.getName())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "삭제권한이 없습니다.");
+        }
+
+        commentRepository.delete(comment);
+
+        return String.format("redirect:/post/detail/%s", comment.getPost().getId());
     }
 }

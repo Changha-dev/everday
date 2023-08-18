@@ -32,4 +32,9 @@ public class Comment {
     private Member author;
 
     private boolean isModified;
+
+    public void update(String content) {
+        this.content = content;
+        this.isModified = true;
+    }
 }

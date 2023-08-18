@@ -70,6 +70,8 @@ public class PostController {
                     .subject(postDto.getSubject())
                     .content(postDto.getContent())
                     .author(member)
+                    .viewCount(0)
+                    .isModified(false)
                     .createDate(LocalDateTime.now())
                     .build();
             postRepository.save(post);
@@ -89,6 +91,7 @@ public class PostController {
         if(byId.isPresent()){
             Post post = byId.get();
             model.addAttribute("post", post);
+            postService.updateView(id.longValue(), post.getViewCount());
         }else{
             new RuntimeException("게시글이 존재하지 않습니다.");
         }
@@ -103,7 +106,7 @@ public class PostController {
 
         if(byId.isPresent()){
             Post post = byId.get();
-            if (!post.getAuthor().getUsername().equals(principal.getName())) {
+            if (!post.getAuthor().getEmail().equals(principal.getName())) {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정권한이 없습니다.");
             }
             //수정 코드 만들기
@@ -126,7 +129,7 @@ public class PostController {
         }
         Post post = postRepository.findById(Long.valueOf(id)).orElseThrow(() -> new RuntimeException("해당 게시글이 존재하지 않습니다."));
 
-        if (!post.getAuthor().getUsername().equals(principal.getName())) {
+        if (!post.getAuthor().getEmail().equals(principal.getName())) {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정권한이 없습니다.");
         }
         postService.update(id.longValue(), postDto.getSubject(), postDto.getContent());
@@ -134,8 +137,20 @@ public class PostController {
         return String.format("redirect:/post/detail/%s", id);
 
 
-
     }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/delete/{id}")
+    public String postDelete(@PathVariable("id") Integer id, Principal principal){
+        Post post = postRepository.findById(id.longValue()).orElseThrow(() -> new RuntimeException("해당 게시글이 존재하지 않습니다."));
+        if (!post.getAuthor().getEmail().equals(principal.getName())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "삭제권한이 없습니다.");
+        }
+        this.postRepository.delete(post);
+
+        return "redirect:/post/list";
+    }
+
 
 
 

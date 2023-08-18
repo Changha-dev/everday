@@ -16,7 +16,12 @@ public class PostService {
     public void update(Long id, String subject, String content){
         Post post = postRepository.findById(id).orElseThrow(() -> new RuntimeException("해당 게시글이 존재하지 않습니다."));
         post.update(subject, content);
-
-
     }
+
+    @Transactional
+    public void updateView(Long id, int viewCount){
+        Post post = postRepository.findById(id).orElseThrow(() -> new RuntimeException("해당 게시글이 존재하지 않습니다."));
+        post.update(viewCount + 1);
+    }
+
 }
