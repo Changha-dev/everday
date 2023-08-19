@@ -38,13 +38,16 @@ public class PostController {
     private final MemberRepository memberRepository;
     private final PostService postService;
     @GetMapping("/list")
-    public String list(Model model, @RequestParam(value="page", defaultValue = "0") int page){
+    public String list(Model model, @RequestParam(value="sort", defaultValue = "recent") String sort,
+                       @RequestParam(value="page", defaultValue = "0") int page,
+                       @RequestParam(value="kw", defaultValue = "") String kw){
 
-        List<Sort.Order> sorts = new ArrayList<>();
-        sorts.add(Sort.Order.desc("createDate"));
-        Pageable pageable = PageRequest.of(page, 20,Sort.by(sorts));
-        Page<Post> paging = postRepository.findAll(pageable);
-        model.addAttribute("paging", paging);
+        Page<Post> list = postService.getList(page, kw, sort);
+
+        model.addAttribute("paging", list);
+        model.addAttribute("kw", kw);
+        model.addAttribute("sort", sort);
+
         return "post_list";
     }
 
@@ -149,6 +152,17 @@ public class PostController {
         this.postRepository.delete(post);
 
         return "redirect:/post/list";
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/vote/{id}")
+    public String postVote(Principal principal, @PathVariable("id") Integer id){
+        Post post = postRepository.findById(id.longValue()).orElseThrow(() -> new RuntimeException("해당 게시글이 존재하지 않습니다."));
+        Member member = memberRepository.findByEmail(principal.getName()).orElseThrow(() -> new RuntimeException("해당 유저가 존재하지 않습니다."));
+        postService.vote(post, member);
+
+        return String.format("redirect:/post/detail/%s", id);
+
     }
 
 

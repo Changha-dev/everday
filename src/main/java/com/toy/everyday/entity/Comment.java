@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -15,8 +17,10 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 public class Comment {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "comment_id")
     private Long id;
 
     @Column(columnDefinition = "TEXT")
@@ -37,4 +41,8 @@ public class Comment {
         this.content = content;
         this.isModified = true;
     }
+
+    @OneToMany(mappedBy = "comment", cascade = CascadeType.REMOVE)
+    private List<MemberComment> memberComments = new ArrayList<>();
+
 }

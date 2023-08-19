@@ -121,4 +121,18 @@ public class CommentController {
 
         return String.format("redirect:/post/detail/%s", comment.getPost().getId());
     }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/vote/{id}")
+    public String postVote(Principal principal, @PathVariable("id") Integer id){
+        Comment comment = commentRepository.findById(id.longValue()).orElseThrow(() -> new RuntimeException("해당 댓글이 존재하지 않습니다."));
+        Member member = memberRepository.findByEmail(principal.getName()).orElseThrow(() -> new RuntimeException("해당 유저가 존재하지 않습니다."));
+        commentService.vote(comment, member);
+
+        return String.format("redirect:/post/detail/%s", comment.getPost().getId());
+
+    }
+
+//
+
 }

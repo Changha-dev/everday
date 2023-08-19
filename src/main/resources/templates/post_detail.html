@@ -1,5 +1,5 @@
 <html layout:decorate="~{layout}" xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml">
-<div layout:fragment="content" class="border-top border-secondary col-sm-12 col-md-9 col-lg-10 p-3">
+<div layout:fragment="content" class="border-top border-secondary col-sm-12 col-md-9 col-lg-10 p-3" style="background-color: white">
   <h5 class="pb-3 mb-0 border-bottom border-secondary font-weight-bold" th:text="${post.subject}"></h5>
   <div class="card-body">
     <div class="mt-3 mark-content" style="white-space: pre-line;" th:text="${post.content}"></div>
@@ -13,6 +13,11 @@
       </div>
     </div>
     <div class="my-3">
+      <a href="javascript:void(0);" class="recommend btn btn-sm btn-outline-secondary"
+         th:data-uri="@{|/post/vote/${post.id}|}">
+        추천
+        <span class="badge rounded-pill bg-success" th:text="${#lists.size(post.memberPosts)}"></span>
+      </a>
       <a th:href="@{|/post/modify/${post.id}|}" class="btn btn-sm btn-outline-secondary" sec:authorize="isAuthenticated()"
          th:if="${post.author != null and #authentication.getPrincipal().getUsername() == post.author.getEmail()}"
          th:text="수정"></a>
@@ -27,25 +32,34 @@
   <div class="border-top mt-3" th:each="comment : ${post.commentList}">
     <div class="mt-3">
       <div class="card-text" style="white-space: pre-line;" th:text="${comment.content}"></div>
-      <div class="justify-content pt-1">
-          <div class="mb-">
-            <span th:if="${comment.author != null}" th:text="${comment.author.username}"></span>
-            님, <span th:text="${#temporals.format(comment.createDate, 'yyyy년 MM월 dd일 a hh:mm')}"></span>
-          <span th:if="${comment.isModified() }" th:text="' (수정됨)'"></span>
+
+      <div class="d-flex justify-content-between">
+        <div class="text-right" style="color: #777777; font-size: 0.95em;">
+          <span th:if="${comment.author != null}" th:text="${comment.author.username}"></span>
+          님, <span th:text="${#temporals.format(comment.createDate, 'yyyy년 MM월 dd일 a hh:mm')}"></span>
+          <span th:if="${comment.isModified()}" th:text="' (수정됨)'"> </span>
+          <a href="javascript:void(0);" class="my-action recommend" th:data-uri="@{|/comment/vote/${comment.id}|}">
+            <i class="fas fa-thumbs-up" style="color: #777777; font-size: 0.95em" th:text="${' '+#lists.size(comment.memberComments)}"></i>
+          </a>
+          <div class="my-3">
+            <a th:href="@{|/comment/modify/${comment.id}|}" class="btn btn-sm btn-outline-secondary"
+               sec:authorize="isAuthenticated()"
+               th:if="${comment.author != null and #authentication.getPrincipal().getUsername() == comment.author.getEmail()}"
+               th:text="수정"></a>
+            <a href="javascript:void(0);" th:data-uri="@{|/comment/delete/${comment.id}|}"
+               class="delete btn btn-sm btn-outline-secondary" sec:authorize="isAuthenticated()"
+               th:if="${comment.author != null and #authentication.getPrincipal().getUsername() == comment.author.getEmail()}"
+               th:text="삭제"></a>
           </div>
+
+        </div>
+      </div>
+      <div class="justify-content pt-1">
       </div>
     </div>
-    <div class="my-3">
-      <a th:href="@{|/comment/modify/${comment.id}|}" class="btn btn-sm btn-outline-secondary"
-         sec:authorize="isAuthenticated()"
-         th:if="${comment.author != null and #authentication.getPrincipal().getUsername() == comment.author.getEmail()}"
-         th:text="수정"></a>
-      <a href="javascript:void(0);" th:data-uri="@{|/comment/delete/${comment.id}|}"
-         class="delete btn btn-sm btn-outline-secondary" sec:authorize="isAuthenticated()"
-         th:if="${comment.author != null and #authentication.getPrincipal().getUsername() == post.author.getEmail()}"
-         th:text="삭제"></a>
-    </div>
+
   </div>
+
   <!-- 답변 반복 끝  -->
   <!-- 답변 작성 -->
   <form th:action="@{|/comment/create/${post.id}|}" th:object="${commentDto}" method="post" class="my-3">
@@ -58,6 +72,14 @@
   Array.from(delete_elements).forEach(function(element) {
     element.addEventListener('click', function() {
       if(confirm("정말로 삭제하시겠습니까?")) {
+        location.href = this.dataset.uri;
+      };
+    });
+  });
+  const recommend_elements = document.getElementsByClassName("recommend");
+  Array.from(recommend_elements).forEach(function(element) {
+    element.addEventListener('click', function() {
+      if(confirm("정말로 추천하시겠습니까?")) {
         location.href = this.dataset.uri;
       };
     });
