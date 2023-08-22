@@ -12,6 +12,7 @@
 
 ##### 메인페이지 
 <img width="1231" alt="스크린샷 2023-08-22 오후 6 18 52" src="https://github.com/Changha-dev/everday/assets/68684425/5b8deabd-e512-4ccd-b239-04f335183122">
+
 ##### 상세페이지 
 <img width="1199" alt="스크린샷 2023-08-22 오후 6 18 41" src="https://github.com/Changha-dev/everday/assets/68684425/194a6dbb-9861-42e5-8584-cdfc04a7b851">
 
