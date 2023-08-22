@@ -1,7 +1,9 @@
 # EVERYDAY 🌴
 
 
-### 사용기술 : SpringBoot, SpringSecurity, Thymeleaf, Bootstrap
+### 사용기술 
+
+<img src="https://img.shields.io/badge/SPRING-6DB33F?style=for-the-badge&logo=SPRING&logoColor=white"> <img src="https://img.shields.io/badge/SPRINGSECURITY-6DB33F?style=for-the-badge&logo=SPRINGSECURITY&logoColor=white"> <img src="https://img.shields.io/badge/Thymeleaf-005F0F?style=for-the-badge&logo=THYMELEAF&logoColor=white"> <img src="https://img.shields.io/badge/Bootstrap-7952B3?style=for-the-badge&logo=BOOTSTRAP&logoColor=white">
 #### 📍 기간
 * 1차 완성(2023/08/15 ~ 2023/08/19)
 #### 📍 설명 
