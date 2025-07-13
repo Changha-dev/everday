@@ -1,0 +1,18 @@
+version: "3.8"
+
+services:
+  everyday-db:
+    image: mysql:8.0
+    restart: always
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_DATABASE: everyday_db
+      MYSQL_USER: everyday_user
+      MYSQL_PASSWORD: everyday_password
+      MYSQL_ROOT_PASSWORD: everyday_super_password
+    volumes:
+      - everyday-mysql-data:/var/lib/mysql
+
+volumes:
+  everyday-mysql-data:
