@@ -1,0 +1,10 @@
+spring:
+  profiles:
+    active: local
+
+thymeleaf:
+  cache: false
+
+springdoc:
+  paths-to-match:
+    - /**

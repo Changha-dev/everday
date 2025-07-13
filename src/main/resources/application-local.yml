@@ -1,0 +1,22 @@
+spring:
+  config:
+    activate:
+      on-profile: local
+  datasource:
+    url: jdbc:mysql://localhost:3307/everyday_db?useSSL=false&allowPublicKeyRetrieval=true
+    username: everyday_user
+    password: everyday_password
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+        format_sql: false
+logging:
+  level:
+    # Hibernate가 생성하는 SQL 쿼리를 DEBUG 레벨로 보여줍니다.
+    org.hibernate.SQL: DEBUG
+    # SQL에 바인딩되는 파라미터를 TRACE 레벨로 보여줍니다. (매우 유용!)
+    org.hibernate.type.descriptor.sql: TRACE
